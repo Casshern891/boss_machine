@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const bodyParser = require('body-parser');
 module.exports = app;
 
 /* Do not change the following line! It is required for testing and allowing
@@ -12,7 +13,7 @@ const PORT = process.env.PORT || 4001;
 app.use(cors());
 
 // Add middware for parsing request bodies here:
-
+app.use(bodyParser.json());
 
 // Mount your existing apiRouter below at the '/api' path.
 const apiRouter = require('./server/api');
