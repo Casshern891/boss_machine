@@ -10,7 +10,19 @@ const {
     updateInstanceInDatabase,
     deleteFromDatabasebyId,
     deleteAllFromDatabase,
-  } = require('./db.js');
+} = require('./db.js');
+
+router.param('minionId', (req, res, next, id) => {
+    const minion = getFromDatabaseById('minions', id);
+    if (minion) {
+        req.minion = minion;
+        next();
+    } else {
+        res.status(404).send("Minion with this Id was not found!");
+    }
+});
+
+
 
 router.get('/', (req, res,) => {
     const allMinions = getAllFromDatabase('minions');
@@ -20,6 +32,20 @@ router.get('/', (req, res,) => {
 router.post('/', (req, res) => {
   const newMinion = addToDatabase('minions', req.body);
   res.status(201).send(newMinion);
+});
+
+router.get('/:minionId', (req, res) => {
+    res.send(req.minion);
+});
+
+router.put('/:minionId', (req, res) => {
+    const updatedMinion = updateInstanceInDatabase('minions', req.body);
+    res.send(updatedMinion);
+});
+
+router.delete('/:minionId', (req, res) => {
+    const minion = deleteFromDatabasebyId('minions', req.params.minionId);
+    res.status(204).send(minion);
 });
 
 
