@@ -2,6 +2,8 @@ const express = require('express');
 const app = require('../server.js');
 const router = express.Router();
 
+const checkMillionDollarIdea = require('./checkMillionDollarIdea');
+
 const {
     createMeeting,
     getAllFromDatabase,
@@ -27,7 +29,7 @@ router.get('/', (req, res) => {
     res.status(200).send(allIdeas);
 });
 
-router.post('/', (req, res) => {
+router.post('/', checkMillionDollarIdea, (req, res) => {
     const newIdea = addToDatabase('ideas', req.body);
     res.status(201).send(newIdea);
 });
@@ -36,7 +38,7 @@ router.get('/:ideaId', (req, res) => {
     res.send(req.idea);
 });
 
-router.put('/:ideaId', (req, res) => {
+router.put('/:ideaId', checkMillionDollarIdea, (req, res) => {
     const updatedIdea = updateInstanceInDatabase('ideas', req.body);
     res.send(updatedIdea);
 });
