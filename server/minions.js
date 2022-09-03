@@ -48,5 +48,14 @@ router.delete('/:minionId', (req, res) => {
     res.status(204).send(minion);
 });
 
+//router for work
+router.get('/:minionId/work', (req, res) => {
+    const result = getAllFromDatabase('work').filter(
+        work => work.minionId === req.params.minionId
+    );
+    res.status(200).send(result);
+});
+
+
 
 module.exports = router; 
