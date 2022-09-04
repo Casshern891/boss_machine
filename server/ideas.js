@@ -5,13 +5,11 @@ const router = express.Router();
 const checkMillionDollarIdea = require('./checkMillionDollarIdea');
 
 const {
-    createMeeting,
     getAllFromDatabase,
     getFromDatabaseById,
     addToDatabase,
     updateInstanceInDatabase,
-    deleteFromDatabasebyId,
-    deleteAllFromDatabase,
+    deleteFromDatabasebyId
 } = require('./db.js');
 
 router.param('ideaId', (req, res, next, id) => {

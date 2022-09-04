@@ -5,10 +5,7 @@ const router = express.Router();
 const {
     createMeeting,
     getAllFromDatabase,
-    getFromDatabaseById,
     addToDatabase,
-    updateInstanceInDatabase,
-    deleteFromDatabasebyId,
     deleteAllFromDatabase,
 } = require('./db.js');
 

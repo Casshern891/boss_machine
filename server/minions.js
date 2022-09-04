@@ -3,13 +3,11 @@ const app = require('../server');
 const router = express.Router();
 
 const {
-    createMeeting,
     getAllFromDatabase,
     getFromDatabaseById,
     addToDatabase,
     updateInstanceInDatabase,
-    deleteFromDatabasebyId,
-    deleteAllFromDatabase,
+    deleteFromDatabasebyId
 } = require('./db.js');
 
 router.param('minionId', (req, res, next, id) => {
@@ -49,6 +47,16 @@ router.delete('/:minionId', (req, res) => {
 });
 
 //router for work
+router.param('workId', (req, res, next, id) => {
+    const work = getFromDatabaseById('work', id);
+        if (work) {
+            req.work = work;
+            next();
+        } else {
+            res.status(404).send('No work found with that Id!');
+        }
+});
+
 router.get('/:minionId/work', (req, res) => {
     const result = getAllFromDatabase('work').filter(
         work => work.minionId === req.params.minionId
@@ -56,6 +64,25 @@ router.get('/:minionId/work', (req, res) => {
     res.status(200).send(result);
 });
 
+router.post('/:minionId/work', (req, res) => {
+    const newWork = addToDatabase('work', req.body);
+    res.status(201).send(newWork);
+});
 
+router.put('/:minionId/work/:workId', (req, res) => {
+    if (req.params.minionId !== req.body.minionId) {
+        return res.status(400).send('Minion Id must match a minion in our database!');
+    }
+    const updatedWork = updateInstanceInDatabase('work', req.body);
+    res.send(updatedWork);
+});
+
+router.delete('/:minionsId/work/:workId', (req, res) => {
+    if (req.params.minionId !== req.body.minionId) {
+        return res.status(400).send('Minion Id must match a minion in our database!');
+    }
+    const deleted = deleteFromDatabasebyId('work', req.params.workId);
+    res.status(204).send(deleted);
+});
 
 module.exports = router; 
